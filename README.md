@@ -1,6 +1,7 @@
 # OAPRS
 Package for sample Overlap adjustment in PRS
-#### ADNI adjusted IGAP summary [download](https://storage.cloud.google.com/leelabsg/OAPRS/IGAP_summary_ADNI_overlap_adj.txt.gz?authuser=1)
+## ADNI adjusted IGAP summary 
+[download](https://storage.cloud.google.com/leelabsg/OAPRS/IGAP_summary_ADNI_overlap_adj.txt.gz?authuser=1)
 
 ## Dependencies
 Lassosum \
