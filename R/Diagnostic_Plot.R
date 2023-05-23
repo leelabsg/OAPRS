@@ -32,6 +32,7 @@ diagnostic_plt <- function(scores,title,Output_Plot_path=NULL,keep.ind=NULL,ref.
   if(!is.null(ref.ind)){ref_tmp=scores[ref.ind,]
   ref = apply(ref_tmp %>% select(starts_with("prune")),2,function(x){as.numeric(auc(suppressMessages(roc(ref_tmp$pheno_label,x))))})
   }
+  #if(!is.null(method_names)){method_names = paste0("Method ", nrow(nm))}
   trgt = apply(trgt_tmp %>% select(starts_with("prune")),2,function(x){as.numeric(auc(suppressMessages(roc(trgt_tmp$pheno_label,x))))})
   nm = t(as.data.frame(strsplit(names(trgt),split='_'),col.names = 1:length(trgt)))
   auc = data.frame(P=nm[,ncol(nm)],Method=rep(method_names,each=nrow(nm)/length(method_names)),auroc = trgt)
@@ -55,9 +56,7 @@ diagnostic_plt <- function(scores,title,Output_Plot_path=NULL,keep.ind=NULL,ref.
       theme(plot.title = element_text(size = 35),legend.title = element_text(size=35),legend.text = element_text(size=30),axis.text = element_text(size = 20),axis.title = element_text(size = 30)) + geom_text(aes(x = 0,y= 1,label=paste0("Pruned at P: ",nm[1,ncol(nm)-1])),col=1,check_overlap = T,size=6)
   }
   if(!is.null(Output_Plot_path)){
-    png((Output_Plot_path), width=18, height=4.5, units="in", res=450, pointsize=13)
-    print(p)
-    dev.off()
+    ggsave(Output_Plot_path,p, width=18, height=4.5, units="in", dpi=450, pointsize=13)
   }
   print(p)
   return(p)

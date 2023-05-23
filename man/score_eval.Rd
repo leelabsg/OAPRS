@@ -13,6 +13,7 @@ score_eval(
   bim_path = NULL,
   fam_path = NULL,
   pheno_path = NULL,
+  ID_col,
   pheno_col,
   cl = NULL
 )
@@ -34,7 +35,9 @@ score_eval(
 
 \item{pheno_path}{Covariate file of target/validation samples for additional}
 
-\item{pheno_col}{Column for phenotypes. If covariate file is not given. phenotype column from fam will be taken.}
+\item{ID_col}{Column name for Sample ID in pheno_file}
+
+\item{pheno_col}{Column name for phenotypes. If covariate file is not given. phenotype column from fam will be taken.}
 
 \item{cl}{Cluster given from parallel}
 }
