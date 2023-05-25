@@ -2,6 +2,6 @@
 .Rhistory
 .RData
 .Ruserdata
-OAPRS.Rproj
-.Rhistory
-OAPRS.pdf
+src/*.o
+src/*.so
+src/*.dll
