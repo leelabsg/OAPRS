@@ -10,12 +10,12 @@ score_eval(
   target_path,
   output_score_path = NULL,
   platform = "prscs",
+  prs_cols = NULL,
   bim_path = NULL,
   fam_path = NULL,
   pheno_path = NULL,
   ID_col,
-  pheno_col,
-  cl = NULL
+  pheno_col
 )
 }
 \arguments{
@@ -27,7 +27,9 @@ score_eval(
 
 \item{output_score_path}{Path for storing output scores.(Optional)}
 
-\item{platform}{Specify PRS method platform (prscs, ldpred2)}
+\item{platform}{Specify PRS method platform (prscs, ldpred2, PRsice2)}
+
+\item{prs_cols}{For other platforms, you can provide colnames with "SNP","POS","A1","A2","BETA".}
 
 \item{bim_path}{Optional target bim file path}
 
@@ -38,8 +40,6 @@ score_eval(
 \item{ID_col}{Column name for Sample ID in pheno_file}
 
 \item{pheno_col}{Column name for phenotypes. If covariate file is not given. phenotype column from fam will be taken.}
-
-\item{cl}{Cluster given from parallel}
 }
 \value{
 Formatted Summary Statistics
