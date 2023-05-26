@@ -90,7 +90,7 @@ Check_Sums = function(
     stop("Please Specify Population Group: 'eur' or 'eas'")
   }
   if (filter_by_hapmap3){
-    hm = fread(system.file(paste0('extdata/SNPinfo/snpinfo_1kg_hm3_',Pop,".gz"),package = "OAPRS"))
+    hm = fread(system.file(paste0('extdata/SNPInfo/snpinfo_1kg_hm3_',Pop,".gz"),package = "OAPRS"))
   }
   message(paste0(msg," in ",toupper(Pop), " Population"))
   if (is.numeric(cols)){tmp=headers[cols]; names(tmp) = tmp; cols = tmp}
