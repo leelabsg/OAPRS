@@ -42,9 +42,8 @@ arma::mat scorebed(const std::string fileName, int N, int P, const arma::mat inp
     bed.close();
     Rcpp::stop("Magic Number do not match! Not a plink format. \n");
   }
-  printf("%d \n", m3);
   try{
-    if (m3 != -1) throw 0;
+    if (m3 != 1) throw 0;
   }catch(int exception)
   {
     bed.close();
