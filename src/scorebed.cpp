@@ -34,7 +34,7 @@ arma::mat scorebed(const std::string fileName, int N, int P, const arma::mat inp
   //int p=(extract.n_elem>0) ? arma::sum(extract): P ;
   char *header = new char[3];
   bed.read(header, 3);
-  m1 = header[0] ; m2 = header[1]; m3 = header[3];
+  m1 = header[0] ; m2 = header[1]; m3 = header[2];
   try{
     if ((m1 != 108) | (m2 != 27)) throw 0;
   }catch(int exception)
