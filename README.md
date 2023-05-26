@@ -15,8 +15,9 @@ Before the preparation step, GWAS summary statistics using only overlapped indiv
 For list of functions and detailed options in <code>OAPRS</code>, Please refer to this manual : [OAPRS Manual](https://github.com/leelabsg/OAPRS/files/11571878/OAPRS.pdf)
 
 ## Dependencies
-data.table, dplyr, ggplot2, RcppArmadillo, Rcpp (>= 1.0.9)
+data.table, dplyr, ggplot2, RcppArmadillo, Rcpp (>= 1.0.9) 
 
+R.utils are necessary for reading gzipped files <code> install.packages('R.utils') </code>
 
 ## Installation
 You can install <code>OAPRS</code> Package from OAPRS github using [r-devtools](https://www.r-project.org/nosvn/pandoc/devtools.html)
