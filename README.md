@@ -12,38 +12,45 @@ Before the preparation step, GWAS summary statistics using only overlapped indiv
 <code>OAPRS</code> assumes target data to be a PLINK binary file format.
 
 ## Detailed Manual
-For list of functions and detailed options in <code>OAPRS</code>, Please refer to this manual : [OAPRS Manual](https://github.com/leelabsg/OAPRS/files/11540392/OAPRS.pdf)
+For list of functions and detailed options in <code>OAPRS</code>, Please refer to this manual : [OAPRS Manual](https://github.com/leelabsg/OAPRS/files/11571878/OAPRS.pdf)
 
 ## Dependencies
-lassosum, data.table, dplyr, ggplot2 
+data.table, dplyr, ggplot2, RcppArmadillo, Rcpp (>= 1.0.9)
+
 
 ## Installation
-To install lassosum,
-```
-devtools::install_github('tshmak/lassosum')
-```
-Install <code>OAPRS</code> Package 
+You can install <code>OAPRS</code> Package from OAPRS github using [r-devtools](https://www.r-project.org/nosvn/pandoc/devtools.html)
 ```
 devtools::install_github('leelabsg/OAPRS')
 ```
 
 ## Example Usage 
-Example files are found in extdata of OAPRS.
+Example files are found in extdata of OAPRS package repository.
 
 ### 1. Format summary statistics 
 Let's read a partial sample summary statistics on large scale genetic consortium with <code>Check_Sums</code>.
 ```
 data_path = system.file("extdata/example",package = "OAPRS")
+```
+Create Column names first. By setting the cols variable, OAPRS reformat summary statistics for further use. 
+```
+cols = c(BETA="beta",Pval="pval",CHR="chrom",POS="pos",REF="ref",ALT="alt",SNP="rsids")
+```
+We can designate the summary statistics file path and genome_build, and population. If there is not specified column for sample size, Spcf_n, Spcf_n_case, Spcf_n_ctrl are needed.
+```
 cs = Check_Sums(paste0(data_path,'/consortium.ss'),
 Genome_Build = "hg37", Pop = "eas",
-cols = c(BETA="beta",Pval="pval",CHR="chrom",POS="pos",REF="ref",ALT="alt",SNP="rsids"),
+cols=cols,
 Spcf_n=249625,Spcf_n_case = 50466, Spcf_n_ctrl = 199159)
 ```
 Similarly, we can format summary statistics with target summary.
 ```
+cols = c(BETA="beta",Pval="pval",CHR="chrom",POS="pos",REF="ref",ALT="alt",SNP="rsids",SE="sebeta")
+```
+```
 ts = Check_Sums(paste0(data_path,'/target.ss'),
 Genome_Build = "hg37", Pop = "eas",
-cols = c(BETA="beta",Pval="pval",CHR="chrom",POS="pos",REF="ref",ALT="alt",SNP="rsids",SE="sebeta"),
+cols=cols,
 Spcf_n=72210,Spcf_n_case = 5083, Spcf_n_ctrl = 62127)
 ```
 
@@ -82,13 +89,17 @@ lds = Marker_select_ld(adj_ss, Genome_Build="hg37", Pop = "eas")
 
 ### 5. Evaluate Scores on each thresholds
 With result from 4 and prs weights on 3, scores will be evaluated by corresponding sample ID's.
+You can specify platform for prs weights or specify column names 
 ```
 prs_res_paths=c(paste0(data_path,'/prscs_all_chr_unadj.txt'),
   paste0(data_path,'/prscs_all_chr_IVW.txt'),paste0(data_path,'/prscs_all_chr_RZ.txt'))
 scr = score_eval(prs_res_paths,lds, target_path = paste0(data_path,"/target"),platform="prscs",
   pheno_path = paste0(data_path,"/target.pheno"),ID_col="V2",pheno_col="V3")
 ```
-
+For utilizing individual prs, columns with "ref" in the result can be used.
+```
+scr %>% select(IID, contains('ref'))
+```
 ### 6. Generate Visual Diagnostics
 Lets make visual diagnostics plot with generated scores. the legends are set using <code>method_names</code> option 
 ```
@@ -96,16 +107,3 @@ diagnostic_plt(score=scr,title="test",
   Output_Plot_path="~/plot.png",method_names = c("all","IVW","RZ"))
 ```
 
-## Parallelization
-When using conda, consider following option in CMD before making clusters:
-```
-export MKL_NUM_THREADS=1;export MKL_DYNAMIC=false; export OMP_NUM_THREADS=1; export OMP_DYNAMIC=false;
-```
-Using <code>parallel</code>, score evaluation step can be parallelized as following. <code>ncores</code> is refered as number of cores to use.
-```
-ncores=20
-cl <- parallel::makeCluster(ncores, type="FORK")
-scr = score_eval(prs_res_paths,lds, target_path = paste0(data_path,"/target"),platform="prscs",
-  pheno_path = paste0(data_path,"/target.pheno"),ID_col="V2",pheno_col="V3", cl=cl)
-stopCluster(cl = cl)  
-```
